@@ -16,7 +16,7 @@
     <section class="row calculator" ng-controller="waitstaffCtrl">
       <div class="col-sm-7 meal">
         <h3 class="text-center">Enter the meal details</h3>
-        <form name="myForm" class="form" no-validate>
+        <form name="myForm" class="form" novalidate>
           <div class="form-group">
             <label class="sr-only" for="baseMealPrice"></label>
             <div class="input-group">
@@ -50,7 +50,7 @@
               <input type="submit" class="btn btn-success btn-block btn-lg" ng-click="newMeal(input)"></input>
             </div>
             <div class="col-xs-6">
-              <button type="button" class="btn btn-danger btn-block btn-lg">Cancel</button>
+              <button type="button" class="btn btn-danger btn-block btn-lg" ng-click="cancel()">Cancel</button>
             </div>
           </div>
         </form>
@@ -67,11 +67,11 @@
             </thead>
             <tr>
               <td>Price:</td>
-              <td>{{input.baseMealPrice | currency}}</td>
+              <td>{{customer.basePrice | currency}}</td>
             </tr>
             <tr>
-              <td>CA Tax ({{input.taxRate}}%):</td>
-              <td>{{input.taxRate / 100 * input.baseMealPrice | currency}}</td>
+              <td>CA Tax ({{customer.tax}}%):</td>
+              <td>{{customer.tax / 100 * customer.basePrice | currency}}</td>
             </tr>
             <tr>
               <td>Subtotal:</td>
@@ -108,10 +108,10 @@
             </tr>
             <tr>
               <td>Average Tip Per Meal:</td>
-              <td>{{staff.tip / staff.mealCount | currency}}</td>
+              <td>{{staff.ATPM | currency}}</td>
             </tr>
           </table>
-          <button type="button" class="btn btn-default btn-lg pull-right">Reset</button>
+          <button type="button" class="btn btn-default btn-lg pull-right" ng-click="reset()">Reset</button>
         </div>
       </div>
     </section>
