@@ -1,3 +1,7 @@
-.meal td{
+.meal td {
   text-align: right;
+}
+
+.input-group-addon {
+  min-width: 60px;
 }
