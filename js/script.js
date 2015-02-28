@@ -42,14 +42,6 @@ angular.module('myApp', ['ngMessages'])
     //event on Cancel
     $scope.cancel = function () {
       $scope.input = {};
-      $scope.customer = {
-        basePrice: 0,
-        tax: 0,
-        subtotal: 0,
-        tip: 0,
-        tipPercent: 0,
-        tipCash: 0
-      };
       $scope.myForm.$setPristine();
     };
     //event on Reset
@@ -58,6 +50,14 @@ angular.module('myApp', ['ngMessages'])
         tip: 0,
         mealCount: 0,
         ATPM: 0
+      };
+      $scope.customer = {
+        basePrice: 0,
+        tax: 0,
+        subtotal: 0,
+        tip: 0,
+        tipPercent: 0,
+        tipCash: 0
       };
       $scope.cancel();
     };
