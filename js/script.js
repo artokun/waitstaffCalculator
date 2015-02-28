@@ -1,31 +1,20 @@
-var Staff = function() {};
-Staff.prototype = {
-  tip: 0,
-  mealCount: 0,
-  ATPM: 0
-};
-
-var Customer = function() {};
-Customer.prototype = {
-  basePrice: 0,
-  tax: 0,
-  subtotal: 0,
-  tip: 0,
-  tipPercent: 0,
-  tipCash: 0
-}
-
 angular.module('myApp', ['ngMessages'])
   .controller('waitstaffCtrl', ['$scope', function ($scope) {
     //persistent earnings totals
-    $scope.staff = new Staff();
-
+    $scope.staff = {
+      tip: 0,
+      mealCount: 0,
+      ATPM: 0
+    };
     //creating customer object for future ng-repeat implementation
-    $scope.customer = new Customer();
-
-    var myString = 'Hello';
-    myString.customMethod();
-
+    $scope.customer = {
+      basePrice: 0,
+      tax: 0,
+      subtotal: 0,
+      tip: 0,
+      tipPercent: 0,
+      tipCash: 0
+    };
     //event on submit
     $scope.newMeal = function (input) {
       if ($scope.myForm.$submitted && $scope.myForm.$valid) {
@@ -53,12 +42,23 @@ angular.module('myApp', ['ngMessages'])
     //event on Cancel
     $scope.cancel = function () {
       $scope.input = {};
-      $scope.customer = new Customer();
       $scope.myForm.$setPristine();
     };
     //event on Reset
     $scope.reset = function () {
-      $scope.staff = new Staff();
+      $scope.staff = {
+        tip: 0,
+        mealCount: 0,
+        ATPM: 0
+      };
+      $scope.customer = {
+        basePrice: 0,
+        tax: 0,
+        subtotal: 0,
+        tip: 0,
+        tipPercent: 0,
+        tipCash: 0
+      };
       $scope.cancel();
     };
 }]);
