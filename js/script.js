@@ -1,11 +1,18 @@
-var Staff = function() {};
+/*global angular */
+
+// PROTOTYPES//
+var Staff = function () {
+  "use strict";
+};
 Staff.prototype = {
   tip: 0,
   mealCount: 0,
   ATPM: 0
 };
 
-var Customer = function() {};
+var Customer = function () {
+  "use strict";
+};
 Customer.prototype = {
   basePrice: 0,
   tax: 0,
@@ -13,13 +20,31 @@ Customer.prototype = {
   tip: 0,
   tipPercent: 0,
   tipCash: 0
-}
+};
 
-angular.module('myApp', ['ngMessages'])
-  .controller('waitstaffCtrl', ['$scope', function ($scope) {
+//ANGULAR START//
+angular.module('myApp', ['ngMessages', 'ngRoute'])
+  .config(['$routeProvider', function ($routeProvider) {
+    "use strict";
+    $routeProvider.when('/', {
+      templateUrl: 'home.html',
+      controller: 'homeCtrl'
+    })
+      .when('/new-meal', {
+        templateUrl: 'new-meal.html',
+        controller: 'newMealCtrl'
+      })
+      .when('/summary', {
+        templateUrl: 'summary.html',
+        controller: 'summaryCtrl'
+      })
+      .otherwise('/');
+  }])
+  .controller('newMealCtrl', ['$scope', function ($scope) {
+    "use strict";
     //persistent earnings totals
     $scope.staff = new Staff();
-    
+
     //creating customer object for future ng-repeat implementation
     $scope.customer = new Customer();
 
@@ -41,11 +66,11 @@ angular.module('myApp', ['ngMessages'])
         $scope.customer.subtotal = (taxRate * $scope.customer.basePrice) + $scope.customer.basePrice;
 
         $scope.staff.tip = $scope.staff.tip + $scope.customer.tipPercent;
-        $scope.staff.mealCount++;
+        $scope.staff.mealCount += 1;
         $scope.staff.ATPM = $scope.staff.tip / $scope.staff.mealCount;
         $scope.input = {};
         $scope.myForm.$setPristine();
-      };
+      }
     };
     //event on Cancel
     $scope.cancel = function () {
@@ -58,4 +83,4 @@ angular.module('myApp', ['ngMessages'])
       $scope.customer = new Customer();
       $scope.cancel();
     };
-}]);
+  }]);
