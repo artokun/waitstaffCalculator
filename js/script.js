@@ -48,6 +48,7 @@ angular.module('myApp', ['ngMessages', 'ngRoute'])
       this.staff = data;
       this.broadcastItem();
     };
+    sharedService.broadcastItem();
   })
   .controller('newMealCtrl', ['$scope', function ($scope) {
     "use strict";
