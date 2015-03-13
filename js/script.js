@@ -27,8 +27,7 @@ angular.module('myApp', ['ngMessages', 'ngRoute'])
   .config(['$routeProvider', function ($routeProvider) {
     "use strict";
     $routeProvider.when('/', {
-      templateUrl: 'home.html',
-      controller: 'homeCtrl'
+      templateUrl: 'home.html'
     })
       .when('/new-meal', {
         templateUrl: 'new-meal.html',
@@ -40,6 +39,16 @@ angular.module('myApp', ['ngMessages', 'ngRoute'])
       })
       .otherwise('/');
   }])
+  .factory('mySharedService', function ($rootScope) {
+    "use strict";
+    var sharedService = {};
+    sharedService.staff = new Staff();
+    sharedService.customer = new Customer();
+    sharedService.prepForBroadcast = function (data) {
+      this.staff = data;
+      this.broadcastItem();
+    };
+  })
   .controller('newMealCtrl', ['$scope', function ($scope) {
     "use strict";
     //persistent earnings totals
