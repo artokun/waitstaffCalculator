@@ -1,0 +1,24 @@
+<div class="earning col-sm-12">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th colspan="2">
+          <h3>My Earnings Info</h3>
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <td>Tip Total:</td>
+      <td>{{staff.tip | currency}}</td>
+    </tr>
+    <tr>
+      <td>Meal Count:</td>
+      <td>{{staff.mealCount | number}}</td>
+    </tr>
+    <tr>
+      <td>Average Tip Per Meal:</td>
+      <td>{{staff.ATPM | currency}}</td>
+    </tr>
+  </table>
+  <button type="button" class="btn btn-default btn-lg pull-right" ng-click="reset()">Reset</button>
+</div>

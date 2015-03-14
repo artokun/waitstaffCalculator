@@ -1,11 +1,18 @@
-var Staff = function() {};
+/*global angular */
+
+// PROTOTYPES//
+var Staff = function () {
+  "use strict";
+};
 Staff.prototype = {
   tip: 0,
   mealCount: 0,
   ATPM: 0
 };
 
-var Customer = function() {};
+var Customer = function () {
+  "use strict";
+};
 Customer.prototype = {
   basePrice: 0,
   tax: 0,
@@ -13,16 +20,46 @@ Customer.prototype = {
   tip: 0,
   tipPercent: 0,
   tipCash: 0
-}
+};
 
-angular.module('myApp', ['ngMessages'])
-  .controller('waitstaffCtrl', ['$scope', function ($scope) {
-    //persistent earnings totals
-    $scope.staff = new Staff();
-    
-    //creating customer object for future ng-repeat implementation
+//ANGULAR START//
+angular.module('myApp', ['ngMessages', 'ngRoute'])
+  .config(['$routeProvider', function ($routeProvider) {
+    "use strict";
+    $routeProvider.when('/', {
+      templateUrl: 'home.html',
+      controller: 'homeCtrl'
+    })
+      .when('/new-meal', {
+        templateUrl: 'new-meal.html',
+        controller: 'newMealCtrl'
+      })
+      .when('/summary', {
+        templateUrl: 'summary.html',
+        controller: 'summaryCtrl'
+      })
+      .otherwise('/');
+  }])
+  .service('earningService', [function () {
+    "use strict";
+    var earnings = new Staff();
+    this.addMeal = function (tip) {
+      earnings.tip = earnings.tip + tip;
+      earnings.mealCount += 1;
+      earnings.ATPM = earnings.tip / earnings.mealCount;
+      return earnings;
+    };
+    this.getStaffData = function () {
+      return earnings;
+    };
+    this.resetStaffData = function () {
+      earnings = new Staff();
+      return earnings;
+    };
+  }])
+  .controller('newMealCtrl', ['$scope', 'earningService', function ($scope, earningService) {
+    "use strict";
     $scope.customer = new Customer();
-
     //event on submit
     $scope.newMeal = function (input) {
       if ($scope.myForm.$submitted && $scope.myForm.$valid) {
@@ -31,31 +68,23 @@ angular.module('myApp', ['ngMessages'])
         $scope.customer.tax = $scope.input.taxRate;
         taxRate = $scope.input.taxRate / 100;
         tipPercent = $scope.input.tipPercent / 100;
-        //tipCash = $scope.input.tipCash;
-        //  if (tipCash == 0) {
-        //     $scope.customer.tipPercent = $scope.customer.basePrice * tipPercent;
-        //  } else {
-        //     $scope.customer.tipCash = tipCash;
-        //  }
         $scope.customer.tipPercent = $scope.customer.basePrice * tipPercent;
         $scope.customer.subtotal = (taxRate * $scope.customer.basePrice) + $scope.customer.basePrice;
-
-        $scope.staff.tip = $scope.staff.tip + $scope.customer.tipPercent;
-        $scope.staff.mealCount++;
-        $scope.staff.ATPM = $scope.staff.tip / $scope.staff.mealCount;
-        $scope.input = {};
-        $scope.myForm.$setPristine();
-      };
+        earningService.addMeal($scope.customer.tipPercent);
+        $scope.cancel();
+      }
     };
     //event on Cancel
     $scope.cancel = function () {
       $scope.input = {};
       $scope.myForm.$setPristine();
     };
+  }])
+  .controller('summaryCtrl', ['$scope', 'earningService', function ($scope, earningService) {
+    "use strict";
+    $scope.staff = earningService.getStaffData();
     //event on Reset
     $scope.reset = function () {
-      $scope.staff = new Staff();
-      $scope.customer = new Customer();
-      $scope.cancel();
+      $scope.staff = earningService.resetStaffData();
     };
-}]);
+  }]);

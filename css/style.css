@@ -5,3 +5,11 @@
 .input-group-addon {
   min-width: 60px;
 }
+
+.my-form,
+.home,
+.customer,
+nav ul {
+  max-width: 500px;
+  margin: auto;
+}
