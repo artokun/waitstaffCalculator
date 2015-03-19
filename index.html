@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 
 <head>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -9,17 +9,18 @@
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
 </head>
 
-<body >
-  <article class="container" ng-app="myApp">
+<body ng-class="{loading:isLoading}">
+  <article class="container">
     <div class="row">
       <h1 class="text-center">Waitstaff Calculator</h1>
       <nav class="col-xs-12">
         <ul ng-init="tog=1" class="nav nav-pills nav-justified">
           <li ng-class="{'active':toggle(1)}" ng-click="tog=1">
-            <a href="#/home">Home</a>
+            <a href="#/">Home</a>
           </li>
           <li ng-class="{'active':tog==2}" ng-click="tog=2">
             <a href="#/new-meal">New Meal</a>
@@ -30,7 +31,9 @@
         </ul>
       </nav>
     </div>
-    <div class="row" ng-view></div>
+    <div class="animate-view-container">
+      <div class="row animate-view" ng-view></div>
+    </div>
   </article>
 </body>
 
