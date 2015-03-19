@@ -23,13 +23,13 @@ Customer.prototype = {
 };
 
 //ANGULAR START//
-angular.module('myApp', ['ngMessages', 'ngRoute'])
+angular.module('myApp', ['ngMessages', 'ngRoute', 'ngAnimate'])
   .config(['$routeProvider', function ($routeProvider) {
     "use strict";
-    $routeProvider.when('/', {
-      templateUrl: 'home.html',
-      controller: 'homeCtrl'
-    })
+    $routeProvider
+      .when('/', {
+        templateUrl: 'home.html'
+      })
       .when('/new-meal', {
         templateUrl: 'new-meal.html',
         controller: 'newMealCtrl'
@@ -38,8 +38,27 @@ angular.module('myApp', ['ngMessages', 'ngRoute'])
         templateUrl: 'summary.html',
         controller: 'summaryCtrl'
       })
-      .otherwise('/');
+      .when('/error', {
+        template: '<h2>Error - Page Not Found (404)</h2>'
+      })
+      .otherwise({
+        redirectTo: '/error'
+      });
   }])
+  .run(function ($rootScope, $location, $timeout) {
+    "use strict";
+    $rootScope.$on('$routeChangeError', function () {
+      $location.path("/error");
+    });
+    $rootScope.$on('$routeChangeStart', function () {
+      $rootScope.isLoading = true;
+    });
+    $rootScope.$on('$routeChangeSuccess', function () {
+      $timeout(function () {
+        $rootScope.isLoading = false;
+      }, 1000);
+    });
+  })
   .service('earningService', [function () {
     "use strict";
     var earnings = new Staff();
